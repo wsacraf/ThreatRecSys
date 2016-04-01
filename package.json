@@ -1,0 +1,33 @@
+{
+  "name": "rw_TIPRec",
+  "version": "0.0.1",
+  "description": "Compute the recommendations within a threat intelligence platform",
+  "main": "xp.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "distance",
+    "metric",
+    "vector",
+    "euclidean",
+    "data",
+    "mining",
+    "datamining",
+    "machine",
+    "learning"
+  ],
+  "author": "rw-Associate",
+  "license": "nyd",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "lodash": "^4.7.0"
+  }
+}
