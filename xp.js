@@ -2,7 +2,7 @@
 var _ = require("lodash");
 var dispwhoDomWho = false;
 var logMe = '';
-var nbCollections = 100;
+var nbCollections = 50;
 var nbfriends = 10;
 var maxfollowers = 100;
 var nbvoters = 100;
@@ -47,7 +47,6 @@ function refSolution(){
 function squaredEuclidean(p, q) {
   var d = 0;
   for (var i = 0; i < p.length; i++) {
-    //d += (p[i] - q[i]) * (p[i] - q[i]);
     d += ((p[i] - q[i])/(max[i]-min[i])*w[i]) * ((p[i] - q[i])/(max[i]-min[i])*w[i]);
   }
   return d;
@@ -199,7 +198,7 @@ function rw_dominate(p, q, objectives){
   var res = doesDominate(p, q, objectives);
   if (res === false){ //p not dom q
     res = doesDominate(q, p, objectives);
-    if (res){
+    if (res){//p not dom q & q dom p
       logMe = logMe + JSON.stringify(q.values) +  " -- dominates -- " + JSON.stringify(p.values) + '\n';
       dominant = -1;
     }else {// //p not dom q & //q not dom p --> incomparable --> we use the weighted Euclidian distance
@@ -207,11 +206,15 @@ function rw_dominate(p, q, objectives){
       var q_dist = euclidean(q, reference);
       if(p_dist<dangZon && q_dist>dangZon){
         //elimiate q
+        dominant = 1;
+      }else{
+        if(q_dist<dangZon && p_dist>dangZon){
+          //elimiate p
+          dominant = -1;
+        }else{
+          dominant = 2;
+        }
       }
-      if(q_dist<dangZon && p_dist>dangZon){
-        //elimiate p
-      }
-      dominant = 2;
       //logMe = logMe + JSON.stringify(q.values) +  " -- dominates -- " + JSON.stringify(p.values) + '\n';
     }
   } else {
@@ -267,7 +270,7 @@ function dilemmas(problem, cb){
       if (maximaSoFarOption.deleted){
         continue;
       }
-      var outcome = dominate(option, maximaSoFarOption, objectives );
+      var outcome = rw_dominate(option, maximaSoFarOption, objectives );
       if (outcome === -1){ //p not dom q
         shouldInsert = false;
       } else if (outcome === 1 ){
